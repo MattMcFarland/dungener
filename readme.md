@@ -1,6 +1,9 @@
 ## Dungeon Generation API
 This is a highly commented, thorough dungeon generation API that uses BSP (Binary Space Partitioning)
 
+## Usage
+To use, copy and paste all of the contents of index.lua into your pico8 file.
+
 ### `genesis(width,height,max_depth,pathfn,renderfn,min_size) -> rooms, tree`
 
 Generates a dungeon using the BSP algorith.
@@ -52,6 +55,91 @@ The program will decrease the minimum size automatically if it is taking too lon
 #### returns
 
 A tuple of rooms and the tree. rooms contains data about each room in the map, and the tree contains traversable tree of containing cells primarily used for calling rendering functions
+
+#### returns
+
+A tuple of rooms and the tree. rooms contains data about each room in the map, and the tree contains traversable tree of containing cells primarily used for calling rendering functions.
+
+#### Rendering
+
+Assuming you have created something like the `on_path_render` and `on_room_render` functions above, you then iterate over the rooms and traverse the tree to render the map.  In the demo, we use these functions:
+
+```lua
+	function render_rooms()
+		foreach(rooms, function(room)
+			room:render()
+		end)
+	end
+
+	function render_paths(node)
+		if (nil == node.lchild or nil == node.rchild) return
+		node.lchild.leaf:render_path(node.rchild.leaf)
+		render_paths(node.lchild)
+		render_paths(node.rchild)
+	end
+```
+
+
+### Full Example
+```lua
+function _init()
+	-- since we are rendering to pixels,
+	-- we use the screen resolution
+	local map_width=127
+	local map_height=127
+	-- define how deep our binary trie goes
+	-- the higher, the smaller and more rooms you get
+	-- for smaller maps, you should use a smaller number.
+	local depth=6
+	-- declare how the paths are rendered
+	function on_path_render (x0,y0,x1,y1)
+		line(x0,y0,x1,y1,6)
+	end
+	-- declare how the rooms are rendered
+	function on_room_render (x0,y0,x1,y1)
+		rectfill(x0,y0,x1,y1,3)
+		rect(x0,y0,x1,y1,6)
+	end
+	-- get our room and tree tables from
+	-- the generator
+	local rooms, tree = genesis(
+		map_width,
+		map_height,
+		depth,
+		on_path_render,
+		on_room_render
+	)
+	-- now we have our rooms and tree (technically trie)
+	-- but they arent going to render themselves.
+	-- to do this, we need to iterate over the rooms
+	-- and the paths by themselves.
+
+	-- create a function that will render all of the rooms
+	-- by calling the render function on each of the rooms,
+	-- the rooms themselves will then call the on_room_render
+	function render_rooms()
+		foreach(rooms, function(room)
+			room:render()
+		end)
+	end
+	-- create a function that will recursively walk down the tree
+	-- and render paths between each container cell and
+	-- rooms. which creates our hallways. it will end when
+	-- it reaches the "bottom" of the tree, where a node does not
+	-- have children.
+	function render_paths(node)
+		if (nil == node.lchild or nil == node.rchild) return
+		node.lchild.leaf:render_path(node.rchild.leaf)
+		render_paths(node.lchild)
+		render_paths(node.rchild)
+	end
+	-- with our functions defined, we can now render the dungeon.
+	cls()
+	render_paths(tree)
+	render_rooms()
+end
+```
+
 
 ## License
 MIT
