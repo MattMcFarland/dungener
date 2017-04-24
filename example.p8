@@ -55,7 +55,7 @@ function _init()
 	render_rooms()
 end
 
--- Dungeon Genesis v0.1.0
+-- DunGener v0.1.0
 -- generates a dungeon using the BSP algorithm
 -- the width and height are arbitrary units
 -- that can be used for pixels, the pico8 map, or
