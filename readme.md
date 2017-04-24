@@ -4,6 +4,12 @@ This is a highly commented, thorough dungeon generation API that uses BSP (Binar
 ## Usage
 To use, copy and paste all of the contents of [index.lua](./index.lua) into your pico8 file.
 
+## Demo
+
+![demo](./demo.gif)
+
+## API
+
 ### `genesis(width,height,max_depth,pathfn,renderfn,min_size) -> rooms, tree`
 
 Generates a dungeon using the BSP algorith.
