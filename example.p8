@@ -6,7 +6,7 @@ function _init()
 	-- define how deep our binary trie goes
 	-- the higher, the smaller and more rooms you get
 	-- for smaller maps, you should use a smaller number.
-	local depth=6
+	local depth=5
 	-- declare how the paths are rendered
 	function on_path_render (x0,y0,x1,y1)
 		line(x0,y0,x1,y1,6)
@@ -23,7 +23,8 @@ function _init()
 		map_height,
 		depth,
 		on_path_render,
-		on_room_render
+		on_room_render,
+		6
 	)
 	-- now we have our rooms and tree (technically trie)
 	-- but they arent going to render themselves.
@@ -55,7 +56,7 @@ function _init()
 	render_rooms()
 end
 
--- DunGener v0.1.0
+-- DunGener v0.1.1
 -- generates a dungeon using the BSP algorithm
 -- the width and height are arbitrary units
 -- that can be used for pixels, the pico8 map, or
@@ -225,13 +226,24 @@ function genesis(width, height, max_depth, pathfn, renderfn, min_size)
 		-- the given container's info
 		local r = {}
 
-		local w_padding = rint(flr(c.w*.15), flr(c.w*.35))
-		local h_padding = rint(flr(c.h*.15), flr(c.h*.30))
+		local w_padding = rint(flr(c.w*.15), flr(c.w*.25))
+		local h_padding = rint(flr(c.h*.20), flr(c.h*.25))
 		r.x = c.x + w_padding
 		r.y = c.y + h_padding
 		r.w = c.w - (w_padding * 2)
 		r.h = c.h - (h_padding * 2)
-
+		if (r.h > r.w*1.6) then
+		  local cap = rint(r.w, r.w*1.25)
+			local difference = r.h-cap
+			r.h=cap
+			r.y += flr(difference/2)
+		end
+		if (r.w > r.h*1.6) then
+		  local cap = rint(r.h, r.h*1.25)
+			local difference = r.w-cap
+			r.w=cap
+			r.x += flr(difference/2)
+		end
 		function r:render()
 			renderfn(
 				self.x,  self.y,
