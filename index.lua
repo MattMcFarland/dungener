@@ -121,7 +121,6 @@ function genesis(width, height, max_depth, pathfn, renderfn, min_size)
         cont.w, cont.h - r1.h,
         tries
       )
-
       if (tries < 60) then
         local r1_h_ratio=r1.h/r1.w
         local r2_h_ratio=r2.h/r2.w

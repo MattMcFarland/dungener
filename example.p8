@@ -56,48 +56,6 @@ function _init()
 	render_rooms()
 end
 
--- DunGener v0.1.1
--- generates a dungeon using the BSP algorithm
--- the width and height are arbitrary units
--- that can be used for pixels, the pico8 map, or
--- something of your own creation.
--- @see http://www.roguebasin.com/index.php?title=Basic_BSP_Dungeon_generation
--- @see https://eskerda.com/bsp-dungeon-generation/
--- @param {int} width Map width - see above for more info
--- @param {int} height Map Height - see above for more info
--- @param {int} max_depth - how deep the BSP tree gets
---				the greater the number, the more and smaller rooms
---				are generated. For large maps, a higher number is useful,
---				smaller maps, a lower number works better.
---				The program will begin to decrease depth automatically
---				if the process is taking too long. (decreases every second)
--- @param {fn} pathfn - path connection function
--- 				it is called with (x0,y0,x1,y1)
---        where the coordinates make a line
---        from two points, the line is always
---        vertical, and horizontal. it always goes
---        from center of a container to another center
---        of another container. It is guaranteed to
---        go from left to right, or top to bottom.
---				you can use this to render tiles
---        to the map, or to pixels.
--- @param {fn} renderfn - room rendering function
--- 				it is called with (x0,y0,x1,y1)
---        where the coordinates make a rectangle
---				called on your own by iterating
---				over rooms and calling room.render() on each
---				used to render tiles to the map, or to pixels.
--- @param {int} min_size - minimum room size before
---				the room is not added to the rooms array, default is 8.
---				The program will decrease the minimum size if it is taking
---				too long to process, which is usually only the case when
---				the minimum size is too high.
--- @returns {table} rooms, {table} tree
---				tuple of tables, rooms and tree.
---				rooms contains data about each room in the map
---				tree contains traversable tree of containing cells
---				primarily used for calling rendering functions
-
 function genesis(width, height, max_depth, pathfn, renderfn, min_size)
 	local fail = false
 	if (__retries == 500) then
@@ -161,10 +119,8 @@ function genesis(width, height, max_depth, pathfn, renderfn, min_size)
 				tries
 			)
 			if (tries < 60) then
-
 				local r1_w_ratio=r1.w/r1.h
 				local r2_w_ratio=r2.w/r2.h
-
 				if (r1_w_ratio < 0.45 or r2_w_ratio < 0.45) split_container(cont, tries)
 			end
 
