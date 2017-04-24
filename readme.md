@@ -56,10 +56,6 @@ The program will decrease the minimum size automatically if it is taking too lon
 
 A tuple of rooms and the tree. rooms contains data about each room in the map, and the tree contains traversable tree of containing cells primarily used for calling rendering functions
 
-#### returns
-
-A tuple of rooms and the tree. rooms contains data about each room in the map, and the tree contains traversable tree of containing cells primarily used for calling rendering functions.
-
 #### Rendering
 
 Assuming you have created something like the `on_path_render` and `on_room_render` functions above, you then iterate over the rooms and traverse the tree to render the map.  In the demo, we use these functions:
