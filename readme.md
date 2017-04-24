@@ -34,12 +34,9 @@ How deep the BSP tree gets. The greater the number, the more and smaller rooms a
 it is called with (x0,y0,x1,y1)   where the coordinates make a line from two points, the line is always  vertical, or horizontal. it always goes from center of a container to another center of another container. It is guaranteed to go from left to right, or top to bottom.
 
 ```lua
-function render_paths(node)
-  if (nil == node.lchild or nil == node.rchild) return
-  node.lchild.leaf:render_path(node.rchild.leaf)
-  render_paths(node.lchild)
-  render_paths(node.rchild)
-end
+	function on_path_render (x0,y0,x1,y1)
+		line(x0,y0,x1,y1,6)
+	end
 ```
 
 #### renderfn (function)
@@ -81,6 +78,12 @@ function render_paths(node)
 end
 ```
 
+Which then could be called to render like this
+```lua
+  cls()
+  render_paths(tree)
+  render_rooms()
+```
 
 ### Full Example
 ```lua
@@ -92,7 +95,7 @@ function _init()
   -- define how deep our binary trie goes
   -- the higher, the smaller and more rooms you get
   -- for smaller maps, you should use a smaller number.
-  local depth=6
+  local depth=5
   -- declare how the paths are rendered
   function on_path_render (x0,y0,x1,y1)
     line(x0,y0,x1,y1,6)
@@ -109,7 +112,8 @@ function _init()
     map_height,
     depth,
     on_path_render,
-    on_room_render
+    on_room_render,
+    6
   )
   -- now we have our rooms and tree (technically trie)
   -- but they arent going to render themselves.
