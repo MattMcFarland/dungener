@@ -80,9 +80,9 @@ end
 
 Which then could be called to render like this
 ```lua
-  cls()
-  render_paths(tree)
-  render_rooms()
+cls()
+render_paths(tree)
+render_rooms()
 ```
 
 ### Full Example
