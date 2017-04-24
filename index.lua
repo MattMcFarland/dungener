@@ -1,4 +1,4 @@
--- Dungeon Genesis v0.1.0
+-- DunGener v0.1.0
 -- generates a dungeon using the BSP algorithm
 -- the width and height are arbitrary units
 -- that can be used for pixels, the pico8 map, or
@@ -41,11 +41,11 @@
 --				primarily used for calling rendering functions
 
 function genesis(width, height, max_depth, pathfn, renderfn, min_size)
-	fail = false
-	if (__retries == 1000) then
+	local fail = false
+	if (__retries == 500) then
 		if (max_depth > 2) max_depth -= 1
 	end
-	if (__retries == 2000) then
+	if (__retries == 1000) then
 		if (min_size > 4) min_size -= 1
 		__retries = 0
 	end
@@ -70,9 +70,6 @@ function genesis(width, height, max_depth, pathfn, renderfn, min_size)
 		-- calculate center coordinates
 		c.cx=c.x+flr(c.w/2)
 		c.cy=c.y+flr(c.h/2)
-		function c:paint()
-			rect(self.x,self.y,self.x+self.w,self.y+self.h,10)
-		end
 		-- render path fn
 		function c:render_path(o)
 			local x0 = min(self.cx, o.cx)
