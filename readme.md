@@ -34,9 +34,9 @@ How deep the BSP tree gets. The greater the number, the more and smaller rooms a
 it is called with (x0,y0,x1,y1)   where the coordinates make a line from two points, the line is always  vertical, or horizontal. it always goes from center of a container to another center of another container. It is guaranteed to go from left to right, or top to bottom.
 
 ```lua
-  function on_path_render (x0,y0,x1,y1)
-    line(x0,y0,x1,y1,6)
-  end
+function on_path_render (x0,y0,x1,y1)
+  line(x0,y0,x1,y1,6)
+end
 ```
 
 #### renderfn (function)
