@@ -1,3 +1,7 @@
+pico-8 cartridge // http://www.pico-8.com
+version 8
+__lua__
+
 function _init()
 	-- since we are rendering to pixels,
 	-- we use the screen resolution
